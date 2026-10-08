@@ -7,17 +7,17 @@ import (
 	"errors"
 )
 
-type ProductService struct {
+type productService struct {
 	repo repository.ProductRepository
 }
 
-func NewProductService(r repository.ProductRepository) ProductService {
-	return ProductService{
+func NewProductService(r repository.ProductRepository) api.ProductService {
+	return productService{
 		repo: r,
 	}
 }
 
-func (p ProductService) AddProduct(ctx context.Context, cmd api.AddProductCommand) (api.AddProductResult, error) {
+func (p productService) AddProduct(ctx context.Context, cmd api.AddProductCommand) (api.AddProductResult, error) {
 	if cmd.Product.Count <= 0 {
 		return api.AddProductResult{}, errors.New("count must be greater than zero")
 	}
@@ -38,7 +38,7 @@ func (p ProductService) AddProduct(ctx context.Context, cmd api.AddProductComman
 	return api.AddProductResult{ID: entityID}, nil
 }
 
-func (p ProductService) ListProducts(ctx context.Context, query api.ListProductsQuery) (api.ListProductsResult, error) {
+func (p productService) ListProducts(ctx context.Context, query api.ListProductsQuery) (api.ListProductsResult, error) {
 	productsList, err := p.repo.GetAll(ctx)
 	if err != nil {
 		return api.ListProductsResult{}, err

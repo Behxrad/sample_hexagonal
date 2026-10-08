@@ -2,29 +2,30 @@ package repository
 
 import (
 	"code_base/internal/domain/entity"
+	"code_base/internal/port/outbound/repository"
 	"context"
 	"errors"
 )
 
-type PostgresProductRepository struct {
+type postgresProductRepository struct {
 }
 
-func NewPostgresProductRepository() PostgresProductRepository {
-	return PostgresProductRepository{}
+func NewPostgresProductRepository() repository.ProductRepository {
+	return postgresProductRepository{}
 }
 
-func (p PostgresProductRepository) Create(context.Context, entity.Product) (string, error) {
+func (p postgresProductRepository) Create(context.Context, entity.Product) (string, error) {
 	return "", errors.New("not implemented")
 }
 
-func (p PostgresProductRepository) FindByID(context.Context, string) (entity.Product, error) {
+func (p postgresProductRepository) FindByID(context.Context, string) (entity.Product, error) {
 	return entity.Product{}, errors.New("not implemented")
 }
 
-func (p PostgresProductRepository) FindByName(context.Context, string) (entity.Product, error) {
+func (p postgresProductRepository) FindByName(context.Context, string) (entity.Product, error) {
 	return entity.Product{}, errors.New("not implemented")
 }
 
-func (p PostgresProductRepository) GetAll(context.Context) ([]entity.Product, error) {
+func (p postgresProductRepository) GetAll(context.Context) ([]entity.Product, error) {
 	return []entity.Product{}, errors.New("not implemented")
 }
