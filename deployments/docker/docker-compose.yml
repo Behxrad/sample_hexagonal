@@ -1,0 +1,18 @@
+name: sample_hexagonal
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: app_db
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_db_data:/var/lib/postgresql
+      - ../../migrations/postgres:/docker-entrypoint-initdb.d
+
+volumes:
+  postgres_db_data:
