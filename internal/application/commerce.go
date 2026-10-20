@@ -10,22 +10,29 @@ import (
 // Composition root
 type CommerceApp struct {
 	httpServer inbound_api.HttpServer
+	grpcServer inbound_api.GRPCServer
 	stop       func() error
 }
 
 func NewCommerceApp(ctx context.Context) CommerceApp {
 	productRepository := repository.NewPostgresProductRepository(ctx)
 	productService := service.NewProductService(productRepository)
-	server := inbound_api.NewHttpServer(productService)
+	httpServer := inbound_api.NewHttpServer(productService)
+	grpcServer := inbound_api.NewGRPCServer(productService)
 
 	return CommerceApp{
-		httpServer: server,
+		httpServer: httpServer,
+		grpcServer: grpcServer,
 		stop: func() error {
 			err := productRepository.Close(ctx)
 			if err != nil {
 				return err
 			}
-			err = server.Close(ctx)
+			err = httpServer.Close(ctx)
+			if err != nil {
+				return err
+			}
+			err = grpcServer.Close(ctx)
 			if err != nil {
 				return err
 			}
@@ -35,7 +42,11 @@ func NewCommerceApp(ctx context.Context) CommerceApp {
 }
 
 func (c CommerceApp) Start(ctx context.Context) error {
-	err := c.httpServer.Serve()
+	err := c.httpServer.Serve(ctx)
+	if err != nil {
+		return err
+	}
+	err = c.grpcServer.Serve(ctx)
 	if err != nil {
 		return err
 	}

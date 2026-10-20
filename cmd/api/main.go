@@ -43,5 +43,6 @@ func ListenForGracefulShutdown(application application.CommerceApp) {
 	case <-done:
 		log.Println("Shutdown complete")
 	case <-time.After(time.Minute):
+		log.Println("Shutdown timeout")
 	}
 }

@@ -1,6 +1,8 @@
 package lib
 
+import "context"
+
 type Server interface {
-	Serve() error
+	Serve(ctx context.Context) error
 	Closable
 }

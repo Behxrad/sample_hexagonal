@@ -22,7 +22,7 @@ func NewHttpServer(s api.ProductService) HttpServer {
 	}
 }
 
-func (h HttpServer) Serve() error {
+func (h HttpServer) Serve(ctx context.Context) error {
 	go func() {
 		err := http.ListenAndServe(":8080", h.mux)
 		if err != nil {

@@ -14,5 +14,19 @@ services:
       - postgres_db_data:/var/lib/postgresql
       - ../../migrations/postgres:/docker-entrypoint-initdb.d
 
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo_admin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    volumes:
+      - mongo_db_data:/data/db
+      - ../../migrations/mongo:/docker-entrypoint-initdb.d
+
 volumes:
   postgres_db_data:
+  mongo_db_data:

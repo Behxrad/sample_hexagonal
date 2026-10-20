@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option go_package = "/inventory";
+
+package inventory;
+
+message CreateProductCommand {
+  int32 count = 1;
+  int64 price = 2;
+  string name = 3;
+}
+
+message CreateProductResult {
+  string id = 1;
+}
+
+message GetProductsQuery {
+
+}
+
+message GetProductsResult {
+  repeated Product products = 1;
+}
+
+message Product {
+  string id = 1;
+  int32 count = 2;
+  int64 price = 3;
+  string name = 4;
+}
+
+service ProductService {
+  rpc CreateProduct(CreateProductCommand) returns (CreateProductResult);
+  rpc GetProducts(GetProductsQuery) returns (GetProductsResult);
+}
