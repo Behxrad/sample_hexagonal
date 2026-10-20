@@ -8,7 +8,6 @@ import (
 	"context"
 )
 
-// Composition root
 type CommerceApp struct {
 	httpServer lib.Server
 	grpcServer lib.Server
@@ -16,7 +15,7 @@ type CommerceApp struct {
 }
 
 func NewCommerceApp(ctx context.Context) CommerceApp {
-	productRepository := repository.NewPostgresProductRepository(ctx)
+	productRepository := repository.NewMongoProductRepository(ctx)
 	productService := service.NewProductService(productRepository)
 	httpServer := inbound_api.NewHttpServer(productService)
 	grpcServer := inbound_api.NewGRPCServer(productService)
