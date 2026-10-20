@@ -4,13 +4,14 @@ import (
 	inbound_api "code_base/internal/adapter/inbound/api"
 	"code_base/internal/adapter/outbound/repository"
 	"code_base/internal/service"
+	"code_base/pkg/lib"
 	"context"
 )
 
 // Composition root
 type CommerceApp struct {
-	httpServer inbound_api.HttpServer
-	grpcServer inbound_api.GRPCServer
+	httpServer lib.Server
+	grpcServer lib.Server
 	stop       func() error
 }
 
