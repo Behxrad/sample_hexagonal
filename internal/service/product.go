@@ -1,10 +1,12 @@
 package service
 
 import (
+	"code_base/internal/errcodes"
 	"code_base/internal/port/inbound/api"
 	"code_base/internal/port/outbound/repository"
 	"context"
-	"errors"
+
+	"192.168.100.6/coreinno/common.git/errs"
 )
 
 type productService struct {
@@ -19,7 +21,7 @@ func NewProductService(r repository.ProductRepository) api.ProductService {
 
 func (p productService) AddProduct(ctx context.Context, cmd api.AddProductCommand) (api.AddProductResult, error) {
 	if cmd.Product.Count <= 0 {
-		return api.AddProductResult{}, errors.New("count must be greater than zero")
+		return api.AddProductResult{}, errs.NewError(errcodes.ErrInvalidProductCount)
 	}
 
 	foundEntity, err := p.repo.FindByName(ctx, cmd.Product.Name)
@@ -27,7 +29,7 @@ func (p productService) AddProduct(ctx context.Context, cmd api.AddProductComman
 		return api.AddProductResult{}, err
 	}
 	if foundEntity.Name != "" {
-		return api.AddProductResult{}, errors.New("product already exists")
+		return api.AddProductResult{}, errs.NewError(errcodes.ErrProductExists)
 	}
 
 	entityID, err := p.repo.Create(ctx, mapApiProductToEntityProduct(cmd.Product))

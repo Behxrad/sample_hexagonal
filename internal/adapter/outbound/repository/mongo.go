@@ -3,12 +3,14 @@ package repository
 import (
 	"code_base/configs"
 	"code_base/internal/domain/entity"
+	"code_base/internal/errcodes"
 	"code_base/internal/port/outbound/repository"
 	"context"
 	"errors"
 	"log"
 	"time"
 
+	"192.168.100.6/coreinno/common.git/errs"
 	"go.mongodb.org/mongo-driver/v2/bson"
 
 	"go.mongodb.org/mongo-driver/v2/mongo"
@@ -45,7 +47,7 @@ func NewMongoProductRepository(ctx context.Context) repository.ProductRepository
 	}
 
 	if err := client.Ping(ctx, nil); err != nil {
-		log.Fatal(errors.Join(errors.New("cannot connect to MongoDB"), err))
+		log.Fatal(errors.Join(errs.NewError(errcodes.ErrDatabaseConnectivityIssue), err))
 	}
 
 	return mongoLogRepository{
@@ -68,7 +70,7 @@ func (m mongoLogRepository) Create(ctx context.Context, product entity.Product) 
 
 	id, ok := result.InsertedID.(bson.ObjectID)
 	if !ok {
-		return "", errors.New("unexpected MongoDB inserted ID type")
+		return "", errs.NewError(errs.GeneralInternalServerError)
 	}
 	return id.Hex(), nil
 }

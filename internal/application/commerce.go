@@ -4,8 +4,9 @@ import (
 	inbound_api "code_base/internal/adapter/inbound/api"
 	"code_base/internal/adapter/outbound/repository"
 	"code_base/internal/service"
-	"code_base/pkg/lib"
 	"context"
+
+	"192.168.100.6/coreinno/common.git/lib"
 )
 
 type CommerceApp struct {

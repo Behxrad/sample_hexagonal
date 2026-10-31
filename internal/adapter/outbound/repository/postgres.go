@@ -3,6 +3,7 @@ package repository
 import (
 	"code_base/configs"
 	"code_base/internal/domain/entity"
+	"code_base/internal/errcodes"
 	"code_base/internal/port/outbound/repository"
 	"context"
 	"errors"
@@ -10,6 +11,7 @@ import (
 	"strconv"
 	"time"
 
+	"192.168.100.6/coreinno/common.git/errs"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -54,7 +56,7 @@ func NewPostgresProductRepository(ctx context.Context) repository.ProductReposit
 
 	if err := pool.Ping(ctx); err != nil {
 		pool.Close()
-		log.Fatal(errors.Join(errors.New("cannot connect to postgres"), err))
+		log.Fatal(errors.Join(errs.NewError(errcodes.ErrDatabaseConnectivityIssue), err))
 	}
 
 	return postgresProductRepository{

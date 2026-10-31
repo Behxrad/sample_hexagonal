@@ -3,6 +3,7 @@ module code_base
 go 1.26.0
 
 require (
+	192.168.100.6/coreinno/common.git v0.0.0-20261031130728-7348a8140132
 	github.com/jackc/pgx/v5 v5.11.0
 	go.mongodb.org/mongo-driver/v2 v2.9.2
 	google.golang.org/grpc v1.84.0
@@ -10,7 +11,6 @@ require (
 )
 
 require (
-	192.168.100.6/coreinno/common.git v0.0.0-20261031081354-795f890392d4 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/puddle/v2 v2.2.2 // indirect

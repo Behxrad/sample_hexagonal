@@ -2,8 +2,9 @@ package repository
 
 import (
 	"code_base/internal/domain/entity"
-	"code_base/pkg/lib"
 	"context"
+
+	"192.168.100.6/coreinno/common.git/lib"
 )
 
 type ProductRepository interface {
