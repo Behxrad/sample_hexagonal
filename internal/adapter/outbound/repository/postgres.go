@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"code_base/configs"
 	"code_base/internal/domain/entity"
 	"code_base/internal/port/outbound/repository"
 	"context"
@@ -18,15 +19,33 @@ type postgresProductRepository struct {
 }
 
 func NewPostgresProductRepository(ctx context.Context) repository.ProductRepository {
-	config, err := pgxpool.ParseConfig("postgres://app_user:secret@localhost:5434/app_db")
+	connTimeout, err := time.ParseDuration(configs.ApplicationConfigs.DatabaseConnectTimeout)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	config.MaxConns = 10
-	config.MinConns = 2
-	config.MaxConnLifetime = time.Hour
-	config.MaxConnIdleTime = 30 * time.Minute
+	ctx, cancel := context.WithTimeout(ctx, connTimeout)
+	defer cancel()
+
+	config, err := pgxpool.ParseConfig(configs.ApplicationConfigs.DatabaseURI)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	connIdleTime, err := time.ParseDuration(configs.ApplicationConfigs.DatabaseMaxConnIdleTime)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	connLifeTime, err := time.ParseDuration(configs.ApplicationConfigs.DatabaseMaxConnIdleTime)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	config.MaxConns = int32(configs.ApplicationConfigs.DatabaseMaxConnSize)
+	config.MinConns = int32(configs.ApplicationConfigs.DatabaseMinConnSize)
+	config.MaxConnLifetime = connLifeTime
+	config.MaxConnIdleTime = connIdleTime
 
 	pool, err := pgxpool.NewWithConfig(ctx, config)
 	if err != nil {
@@ -35,7 +54,7 @@ func NewPostgresProductRepository(ctx context.Context) repository.ProductReposit
 
 	if err := pool.Ping(ctx); err != nil {
 		pool.Close()
-		log.Fatal(err)
+		log.Fatal(errors.Join(errors.New("cannot connect to postgres"), err))
 	}
 
 	return postgresProductRepository{

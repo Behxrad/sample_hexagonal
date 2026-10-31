@@ -1,9 +1,11 @@
 package api
 
 import (
+	"code_base/configs"
 	"code_base/internal/port/inbound/api"
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -24,7 +26,8 @@ func NewHttpServer(s api.ProductService) HttpServer {
 
 func (h HttpServer) Serve(ctx context.Context) error {
 	go func() {
-		err := http.ListenAndServe(":8080", h.mux)
+		err := http.ListenAndServe(fmt.Sprintf("%s:%d", configs.ApplicationConfigs.HTTPHost,
+			configs.ApplicationConfigs.HTTPPort), h.mux)
 		if err != nil {
 			log.Fatal(err)
 		}

@@ -2,8 +2,10 @@ package api
 
 import (
 	inventory "code_base/api/proto"
+	"code_base/configs"
 	"code_base/internal/port/inbound/api"
 	"context"
+	"fmt"
 	"log"
 	"net"
 
@@ -30,7 +32,8 @@ func NewGRPCServer(service api.ProductService) GRPCServer {
 
 func (s GRPCServer) Serve(ctx context.Context) error {
 	go func() {
-		lis, err := net.Listen("tcp", ":50051")
+		lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", configs.ApplicationConfigs.GRPCHost,
+			configs.ApplicationConfigs.GRPCPort))
 		if err != nil {
 			log.Fatalf("failed to serve: %v", err)
 		}

@@ -1,13 +1,15 @@
 package repository
 
 import (
+	"code_base/configs"
 	"code_base/internal/domain/entity"
 	"code_base/internal/port/outbound/repository"
 	"context"
 	"errors"
-	"go.mongodb.org/mongo-driver/v2/bson"
 	"log"
 	"time"
+
+	"go.mongodb.org/mongo-driver/v2/bson"
 
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
@@ -18,14 +20,24 @@ type mongoLogRepository struct {
 }
 
 func NewMongoProductRepository(ctx context.Context) repository.ProductRepository {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	connTimeout, err := time.ParseDuration(configs.ApplicationConfigs.DatabaseConnectTimeout)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, connTimeout)
 	defer cancel()
 
+	connIdleTime, err := time.ParseDuration(configs.ApplicationConfigs.DatabaseMaxConnIdleTime)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	clientOpts := options.Client().
-		ApplyURI("mongodb://app_user:app_password@localhost:27017/inventory").
-		SetMaxPoolSize(100).
-		SetMinPoolSize(10).
-		SetMaxConnIdleTime(30 * time.Minute)
+		ApplyURI(configs.ApplicationConfigs.DatabaseURI).
+		SetMaxPoolSize(uint64(configs.ApplicationConfigs.DatabaseMaxConnSize)).
+		SetMinPoolSize(uint64(configs.ApplicationConfigs.DatabaseMinConnSize)).
+		SetMaxConnIdleTime(connIdleTime)
 
 	client, err := mongo.Connect(clientOpts)
 	if err != nil {
@@ -33,7 +45,7 @@ func NewMongoProductRepository(ctx context.Context) repository.ProductRepository
 	}
 
 	if err := client.Ping(ctx, nil); err != nil {
-		log.Fatal(err)
+		log.Fatal(errors.Join(errors.New("cannot connect to MongoDB"), err))
 	}
 
 	return mongoLogRepository{
