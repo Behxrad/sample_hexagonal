@@ -5,14 +5,11 @@ import (
 	"code_base/internal/adapter/outbound/repository"
 	"code_base/internal/service"
 	"context"
-
-	"192.168.100.6/coreinno/common.git/lib"
 )
 
 type CommerceApp struct {
-	httpServer lib.Server
-	grpcServer lib.Server
-	stop       func() error
+	start func() error
+	stop  func() error
 }
 
 func NewCommerceApp(ctx context.Context) CommerceApp {
@@ -22,8 +19,17 @@ func NewCommerceApp(ctx context.Context) CommerceApp {
 	grpcServer := inbound_api.NewGRPCServer(productService)
 
 	return CommerceApp{
-		httpServer: httpServer,
-		grpcServer: grpcServer,
+		start: func() error {
+			err := httpServer.Serve(ctx)
+			if err != nil {
+				return err
+			}
+			err = grpcServer.Serve(ctx)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
 		stop: func() error {
 			err := productRepository.Close(ctx)
 			if err != nil {
@@ -43,11 +49,7 @@ func NewCommerceApp(ctx context.Context) CommerceApp {
 }
 
 func (c CommerceApp) Start(ctx context.Context) error {
-	err := c.httpServer.Serve(ctx)
-	if err != nil {
-		return err
-	}
-	err = c.grpcServer.Serve(ctx)
+	err := c.start()
 	if err != nil {
 		return err
 	}
