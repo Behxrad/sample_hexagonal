@@ -1,13 +1,15 @@
 package api
 
 import (
-	"code_base/configs"
-	"code_base/internal/port/inbound/api"
 	"context"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+	"time"
+
+	"github.com/Behxrad/sample_hexagonal/configs"
+	"github.com/Behxrad/sample_hexagonal/internal/port/inbound/api"
 )
 
 type HttpServer struct {
@@ -26,8 +28,16 @@ func NewHttpServer(s api.ProductService) HttpServer {
 
 func (h HttpServer) Serve(ctx context.Context) error {
 	go func() {
-		err := http.ListenAndServe(fmt.Sprintf("%s:%d", configs.ApplicationConfigs.HTTPHost,
-			configs.ApplicationConfigs.HTTPPort), h.mux)
+		server := &http.Server{
+			Addr: fmt.Sprintf("%s:%d", configs.ApplicationConfigs.HTTPHost,
+				configs.ApplicationConfigs.HTTPPort),
+			Handler:           h.mux,
+			ReadHeaderTimeout: 5 * time.Second,
+			ReadTimeout:       15 * time.Second,
+			WriteTimeout:      30 * time.Second,
+			IdleTimeout:       60 * time.Second,
+		}
+		err := server.ListenAndServe()
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -80,9 +90,13 @@ func GetProducts(service api.ProductService) func(http.ResponseWriter, *http.Req
 
 func writeError(w http.ResponseWriter, err error) {
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(struct {
+	inError := json.NewEncoder(w).Encode(struct {
 		Error string `json:"error"`
 	}{
 		Error: err.Error(),
 	})
+	if inError != nil {
+		log.Println(inError)
+		return
+	}
 }

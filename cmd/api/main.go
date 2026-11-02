@@ -1,13 +1,14 @@
 package main
 
 import (
-	"code_base/internal/application"
 	"context"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/Behxrad/sample_hexagonal/internal/application"
 )
 
 func main() {
@@ -23,7 +24,7 @@ func main() {
 }
 
 func ListenForGracefulShutdown(application application.CommerceApp) {
-	sigChan := make(chan os.Signal)
+	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 	log.Println("Application started")
 	<-sigChan

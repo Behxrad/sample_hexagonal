@@ -1,13 +1,14 @@
 package api
 
 import (
-	inventory "code_base/api/proto"
-	"code_base/configs"
-	"code_base/internal/port/inbound/api"
 	"context"
 	"fmt"
 	"log"
 	"net"
+
+	inventory "github.com/Behxrad/sample_hexagonal/api/proto"
+	"github.com/Behxrad/sample_hexagonal/configs"
+	"github.com/Behxrad/sample_hexagonal/internal/port/inbound/api"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -52,8 +53,8 @@ func (s GRPCServer) Close(ctx context.Context) error {
 
 func (s GRPCServer) CreateProduct(ctx context.Context, cmd *inventory.CreateProductCommand) (*inventory.CreateProductResult, error) {
 	r, err := s.ps.AddProduct(ctx, api.AddProductCommand{Product: api.Product{
-		Count: uint16(cmd.Count),
-		Price: uint32(cmd.Price),
+		Count: uint16(cmd.Count), //nolint
+		Price: uint32(cmd.Price), //nolint
 		Name:  cmd.Name,
 	}})
 	if err != nil {
@@ -61,6 +62,7 @@ func (s GRPCServer) CreateProduct(ctx context.Context, cmd *inventory.CreateProd
 	}
 	return &inventory.CreateProductResult{Id: r.ID}, nil
 }
+
 func (s GRPCServer) GetProducts(ctx context.Context, qry *inventory.GetProductsQuery) (*inventory.GetProductsResult, error) {
 	r, err := s.ps.ListProducts(ctx, api.ListProductsQuery{})
 	if err != nil {

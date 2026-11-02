@@ -1,10 +1,11 @@
 package application
 
 import (
-	inbound_api "code_base/internal/adapter/inbound/api"
-	"code_base/internal/adapter/outbound/repository"
-	"code_base/internal/service"
 	"context"
+
+	inbound_api "github.com/Behxrad/sample_hexagonal/internal/adapter/inbound/api"
+	"github.com/Behxrad/sample_hexagonal/internal/adapter/outbound/repository"
+	"github.com/Behxrad/sample_hexagonal/internal/service"
 )
 
 type CommerceApp struct {

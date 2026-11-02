@@ -1,15 +1,16 @@
 package repository
 
 import (
-	"code_base/configs"
-	"code_base/internal/domain/entity"
-	"code_base/internal/errcodes"
-	"code_base/internal/port/outbound/repository"
 	"context"
 	"errors"
 	"log"
 	"strconv"
 	"time"
+
+	"github.com/Behxrad/sample_hexagonal/configs"
+	"github.com/Behxrad/sample_hexagonal/internal/domain/entity"
+	"github.com/Behxrad/sample_hexagonal/internal/errcodes"
+	"github.com/Behxrad/sample_hexagonal/internal/port/outbound/repository"
 
 	"192.168.100.6/coreinno/common.git/errs"
 	"github.com/jackc/pgx/v5"
@@ -44,8 +45,8 @@ func NewPostgresProductRepository(ctx context.Context) repository.ProductReposit
 		log.Fatal(err)
 	}
 
-	config.MaxConns = int32(configs.ApplicationConfigs.DatabaseMaxConnSize)
-	config.MinConns = int32(configs.ApplicationConfigs.DatabaseMinConnSize)
+	config.MaxConns = int32(configs.ApplicationConfigs.DatabaseMaxConnSize) //nolint
+	config.MinConns = int32(configs.ApplicationConfigs.DatabaseMinConnSize) //nolint
 	config.MaxConnLifetime = connLifeTime
 	config.MaxConnIdleTime = connIdleTime
 
@@ -80,7 +81,6 @@ func (p postgresProductRepository) Create(ctx context.Context, product entity.Pr
 		product.Count,
 		product.Price,
 	).Scan(&product.ID)
-
 	if err != nil {
 		return "", err
 	}
@@ -106,7 +106,6 @@ func (p postgresProductRepository) FindByID(ctx context.Context, id string) (ent
 		&product.Count,
 		&product.Price,
 	)
-
 	if err != nil {
 		return entity.Product{}, err
 	}
@@ -127,7 +126,6 @@ func (p postgresProductRepository) FindByName(ctx context.Context, name string) 
 		&product.Count,
 		&product.Price,
 	)
-
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return entity.Product{}, nil

@@ -1,4 +1,4 @@
-module code_base
+module github.com/Behxrad/sample_hexagonal
 
 go 1.26.0
 

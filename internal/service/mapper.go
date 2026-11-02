@@ -1,8 +1,8 @@
 package service
 
 import (
-	"code_base/internal/domain/entity"
-	"code_base/internal/port/inbound/api"
+	"github.com/Behxrad/sample_hexagonal/internal/domain/entity"
+	"github.com/Behxrad/sample_hexagonal/internal/port/inbound/api"
 )
 
 func mapEntityProductsToApiProducts(products []entity.Product) []api.Product {

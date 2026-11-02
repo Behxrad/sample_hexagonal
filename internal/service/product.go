@@ -1,10 +1,11 @@
 package service
 
 import (
-	"code_base/internal/errcodes"
-	"code_base/internal/port/inbound/api"
-	"code_base/internal/port/outbound/repository"
 	"context"
+
+	"github.com/Behxrad/sample_hexagonal/internal/errcodes"
+	"github.com/Behxrad/sample_hexagonal/internal/port/inbound/api"
+	"github.com/Behxrad/sample_hexagonal/internal/port/outbound/repository"
 
 	"192.168.100.6/coreinno/common.git/errs"
 )

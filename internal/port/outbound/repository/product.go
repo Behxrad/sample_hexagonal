@@ -1,8 +1,9 @@
 package repository
 
 import (
-	"code_base/internal/domain/entity"
 	"context"
+
+	"github.com/Behxrad/sample_hexagonal/internal/domain/entity"
 
 	"192.168.100.6/coreinno/common.git/lib"
 )

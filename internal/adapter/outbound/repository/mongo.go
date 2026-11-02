@@ -1,14 +1,15 @@
 package repository
 
 import (
-	"code_base/configs"
-	"code_base/internal/domain/entity"
-	"code_base/internal/errcodes"
-	"code_base/internal/port/outbound/repository"
 	"context"
 	"errors"
 	"log"
 	"time"
+
+	"github.com/Behxrad/sample_hexagonal/configs"
+	"github.com/Behxrad/sample_hexagonal/internal/domain/entity"
+	"github.com/Behxrad/sample_hexagonal/internal/errcodes"
+	"github.com/Behxrad/sample_hexagonal/internal/port/outbound/repository"
 
 	"192.168.100.6/coreinno/common.git/errs"
 	"go.mongodb.org/mongo-driver/v2/bson"
@@ -133,7 +134,12 @@ func (m mongoLogRepository) GetAll(ctx context.Context) ([]entity.Product, error
 	if err != nil {
 		return nil, err
 	}
-	defer cursor.Close(ctx)
+	defer func(cursor *mongo.Cursor, ctx context.Context) {
+		err := cursor.Close(ctx)
+		if err != nil {
+			log.Println(err.Error())
+		}
+	}(cursor, ctx)
 
 	for cursor.Next(ctx) {
 		var p productDocument
