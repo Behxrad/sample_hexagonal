@@ -15,7 +15,7 @@ services:
       - ../../migrations/postgres:/docker-entrypoint-initdb.d
 
   mongo:
-    image: mongo:8.0
+    image: mongo:latest
     container_name: mongo
     restart: unless-stopped
     ports:

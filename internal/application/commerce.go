@@ -19,7 +19,7 @@ func NewCommerceApp(ctx context.Context) CommerceApp {
 	productService := service.NewProductService(productRepository)
 	httpServer := inbound_api.NewHttpServer(productService)
 	grpcServer := inbound_api.NewGRPCServer(productService)
-	kafka := event.NewKafkaAdapter()
+	kafka := event.NewKafkaAdapter(productService)
 
 	return CommerceApp{
 		start: func() error {
