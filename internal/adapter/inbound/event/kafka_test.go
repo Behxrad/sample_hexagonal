@@ -148,5 +148,5 @@ func TestConsume(t *testing.T) {
 		t.Error("expected non-empty product id")
 	}
 
-	log.Printf("final result id=%s requestId=%s", result.Id, result.Metadata.Description)
+	log.Printf("final result id=%s requestId=%s", result.Id, result.Metadata.RequestId)
 }
