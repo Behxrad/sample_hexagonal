@@ -5,6 +5,7 @@ import (
 )
 
 type AppConfigs struct {
+	ServiceName             string `config:"SERVICE_NAME"`
 	DatabaseURI             string `config:"DB_URI"`
 	DatabaseMaxConnSize     uint   `config:"DB_MAX_CONN_SIZE"`
 	DatabaseMinConnSize     uint   `config:"DB_MIN_CONN_SIZE"`
@@ -15,6 +16,9 @@ type AppConfigs struct {
 	GRPCPort                uint   `config:"GRPC_PORT"`
 	HTTPHost                string `config:"HTTP_HOST"`
 	HTTPPort                uint   `config:"HTTP_PORT"`
+	EventBrokerHost         string `config:"EVENT_BROKER_HOST"`
+	EventBrokerPort         uint   `config:"EVENT_BROKER_PORT"`
+	EventBrokerTimeout      string `config:"EVENT_BROKER_TIMEOUT"`
 }
 
 var ApplicationConfigs AppConfigs

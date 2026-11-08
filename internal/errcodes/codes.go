@@ -9,4 +9,5 @@ const (
 
 	// 5xx...x range
 	ErrDatabaseConnectivityIssue = errs.Code(50001)
+	ErrConsumingBrokers          = errs.Code(50002)
 )
