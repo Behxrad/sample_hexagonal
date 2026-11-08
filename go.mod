@@ -4,7 +4,7 @@ go 1.26.5
 
 require (
 	192.168.100.6/coreinno/common.git v0.0.0-20261108074448-4d0c2ec25b8e
-	192.168.100.6/coreinno/proto_common.git v0.0.0-20261108080409-76b8559ffa68
+	192.168.100.6/coreinno/proto_common.git v0.0.0-20261108091632-25109637f1a8
 	github.com/jackc/pgx/v5 v5.11.0
 	go.mongodb.org/mongo-driver/v2 v2.9.2
 	google.golang.org/grpc v1.85.0

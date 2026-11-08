@@ -1,5 +1,7 @@
 192.168.100.6/coreinno/common.git v0.0.0-20261108074448-4d0c2ec25b8e h1:QUfb+ZMr8FnhUnp3zZ0FVxfr6ZPICT3fC+zGw46m6sU=
 192.168.100.6/coreinno/common.git v0.0.0-20261108074448-4d0c2ec25b8e/go.mod h1:IM6uzgmbEx8cgHW2T4Y4Job+hq3k1nM5vHVHAtl3e6A=
+192.168.100.6/coreinno/proto_common.git v0.0.0-20261108091632-25109637f1a8 h1:WRnfl0Bqix4mO5qSBbLf5lOrhIjCnHNNbqiz5wN0r98=
+192.168.100.6/coreinno/proto_common.git v0.0.0-20261108091632-25109637f1a8/go.mod h1:rB+xzpLUrZRK0b2/Hy7+hd5kqfnQMT/jyf7SdnkH4ik=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
