@@ -6,7 +6,8 @@ import (
 	"log"
 	"net"
 
-	inventory "github.com/Behxrad/sample_hexagonal/api/proto"
+	"192.168.100.6/coreinno/proto_common.git/gen/sample/inventory/v1"
+	inbound_headers "192.168.100.6/coreinno/proto_common.git/model/common/v1"
 	"github.com/Behxrad/sample_hexagonal/configs"
 	"github.com/Behxrad/sample_hexagonal/internal/port/inbound/api"
 
@@ -52,33 +53,42 @@ func (s GRPCServer) Close(ctx context.Context) error {
 }
 
 func (s GRPCServer) CreateProduct(ctx context.Context, cmd *inventory.CreateProductCommand) (*inventory.CreateProductResult, error) {
-	r, err := s.ps.AddProduct(ctx, api.AddProductCommand{Product: api.Product{
-		Count: uint16(cmd.Count), //nolint
-		Price: uint32(cmd.Price), //nolint
-		Name:  cmd.Name,
-	}})
+	r, err := s.ps.AddProduct(ctx, api.AddProductCommand{
+		MetaData: inbound_headers.FromProto(cmd.Metadata),
+		Product: api.Product{
+			Count: uint16(cmd.Count), //nolint
+			Price: uint32(cmd.Price), //nolint
+			Name:  cmd.Name,
+		}})
 	if err != nil {
 		return nil, err
 	}
-	return &inventory.CreateProductResult{Id: r.ID}, nil
+	return &inventory.CreateProductResult{
+		Metadata: r.MetaData.ToProto(),
+		Id:       r.ID,
+	}, nil
 }
 
 func (s GRPCServer) GetProducts(ctx context.Context, qry *inventory.GetProductsQuery) (*inventory.GetProductsResult, error) {
-	r, err := s.ps.ListProducts(ctx, api.ListProductsQuery{})
+	r, err := s.ps.ListProducts(ctx, api.ListProductsQuery{
+		MetaData: inbound_headers.FromProto(qry.Metadata),
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	return &inventory.GetProductsResult{Products: func() []*inventory.Product {
-		products := make([]*inventory.Product, 0)
-		for _, p := range r.Products {
-			products = append(products, &inventory.Product{
-				Id:    p.ID,
-				Count: int32(p.Count),
-				Price: int64(p.Price),
-				Name:  p.Name,
-			})
-		}
-		return products
-	}()}, nil
+	return &inventory.GetProductsResult{
+		Metadata: r.MetaData.ToProto(),
+		Products: func() []*inventory.Product {
+			products := make([]*inventory.Product, 0)
+			for _, p := range r.Products {
+				products = append(products, &inventory.Product{
+					Id:    p.ID,
+					Count: int32(p.Count),
+					Price: int64(p.Price),
+					Name:  p.Name,
+				})
+			}
+			return products
+		}()}, nil
 }

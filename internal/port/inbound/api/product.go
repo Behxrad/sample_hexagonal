@@ -2,19 +2,26 @@ package api
 
 import (
 	"context"
+
+	inbound_headers "192.168.100.6/coreinno/proto_common.git/model/common/v1"
 )
 
 type AddProductCommand struct {
-	Product Product
+	MetaData inbound_headers.RequestMetadata
+	Product  Product
 }
 
 type AddProductResult struct {
-	ID string
+	MetaData inbound_headers.ResponseMetadata
+	ID       string
 }
 
-type ListProductsQuery struct{}
+type ListProductsQuery struct {
+	MetaData inbound_headers.RequestMetadata
+}
 
 type ListProductsResult struct {
+	MetaData inbound_headers.ResponseMetadata
 	Products []Product
 }
 
