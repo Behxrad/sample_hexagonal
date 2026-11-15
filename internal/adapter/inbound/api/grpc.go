@@ -2,15 +2,18 @@ package api
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"net"
 
+	"192.168.100.6/coreinno/common.git/errs"
+	"192.168.100.6/coreinno/proto_common.git/gen/common/v1"
 	"192.168.100.6/coreinno/proto_common.git/gen/sample/inventory/v1"
 	inbound_headers "192.168.100.6/coreinno/proto_common.git/model/common/v1"
+	"192.168.100.6/coreinno/proto_common.git/rpc_util"
 	"github.com/Behxrad/sample_hexagonal/configs"
 	"github.com/Behxrad/sample_hexagonal/internal/port/inbound/api"
-
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -25,7 +28,8 @@ func NewGRPCServer(service api.ProductService) GRPCServer {
 	g := GRPCServer{
 		ps: service,
 	}
-	sr := grpc.NewServer()
+	sr := grpc.NewServer(grpc.ChainUnaryInterceptor(rpc_util.PanicRecoveryInterceptor(),
+		rpc_util.ErrorResponseInterceptor(ErrorToMetadataMapper)))
 	inventory.RegisterProductServiceServer(sr, g)
 	reflection.Register(sr)
 	g.gs = sr
@@ -44,6 +48,26 @@ func (s GRPCServer) Serve(ctx context.Context) error {
 		}
 	}()
 	return nil
+}
+
+func ErrorToMetadataMapper(err error) *common.ResponseMetadata {
+	var serviceError *errs.Error
+	code := errs.GeneralUnknownError
+	if ok := errors.As(err, &serviceError); ok {
+		switch serviceError.Code.LeftmostDigit() {
+		case 4:
+			code = errs.GeneralClientError
+		case 5:
+			code = errs.GeneralInternalServerError
+		case 6:
+		default:
+			code = errs.GeneralUnknownError
+		}
+	}
+	return &common.ResponseMetadata{
+		StatusCode:   common.StatusCode(code),
+		TraceMessage: err.Error(),
+	}
 }
 
 func (s GRPCServer) Close(ctx context.Context) error {

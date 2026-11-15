@@ -3,8 +3,8 @@ module github.com/Behxrad/sample_hexagonal
 go 1.26.5
 
 require (
-	192.168.100.6/coreinno/common.git v0.0.0-20261108074448-4d0c2ec25b8e
-	192.168.100.6/coreinno/proto_common.git v0.0.0-20261108212130-3b518ca620d2
+	192.168.100.6/coreinno/common.git v0.0.0-20261115135028-ab1d988637c9
+	192.168.100.6/coreinno/proto_common.git v0.0.0-20261115133555-99b242514365
 	github.com/google/uuid v1.6.0
 	github.com/jackc/pgx/v5 v5.11.0
 	github.com/segmentio/kafka-go v0.4.51
