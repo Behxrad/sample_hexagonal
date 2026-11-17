@@ -29,7 +29,7 @@ func NewGRPCServer(service api.ProductService) GRPCServer {
 		ps: service,
 	}
 	sr := grpc.NewServer(grpc.ChainUnaryInterceptor(rpc_util.PanicRecoveryInterceptor(),
-		rpc_util.ErrorResponseInterceptor(ErrorToMetadataMapper)))
+		rpc_util.ErrorResponseInterceptor(ErrorToMetadataMapper), PrintRequestMetadataFromContextInterceptor))
 	inventory.RegisterProductServiceServer(sr, g)
 	reflection.Register(sr)
 	g.gs = sr
@@ -48,6 +48,17 @@ func (s GRPCServer) Serve(ctx context.Context) error {
 		}
 	}()
 	return nil
+}
+
+func PrintRequestMetadataFromContextInterceptor(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp any, err error) {
+	fromContext, ok := inbound_headers.RequestMetadataFromContext(ctx)
+	if !ok {
+		fmt.Println("inbound_headers.RequestMetadataFromContext")
+	} else {
+		fmt.Printf("inbound_headers.RequestMetadataFromContext: %+v\n", fromContext)
+	}
+
+	return handler(ctx, req)
 }
 
 func ErrorToMetadataMapper(err error) *common.ResponseMetadata {

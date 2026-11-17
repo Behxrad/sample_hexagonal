@@ -12,9 +12,9 @@ type AppConfigs struct {
 	DatabaseMaxConnIdleTime string `config:"DB_MAX_CONN_IDLE_TIME"`
 	DatabaseMaxConnLifeTime string `config:"DB_MAX_CONN_LIFE_TIME"`
 	DatabaseConnectTimeout  string `config:"DB_CONNECT_TIMEOUT"`
-	GRPCHost                string `config:"GRPC_HOST"`
+	GRPCHost                string `config:"GRPC_HOST,optional"`
 	GRPCPort                uint   `config:"GRPC_PORT"`
-	HTTPHost                string `config:"HTTP_HOST"`
+	HTTPHost                string `config:"HTTP_HOST,optional"`
 	HTTPPort                uint   `config:"HTTP_PORT"`
 	EventBrokerHost         string `config:"EVENT_BROKER_HOST"`
 	EventBrokerPort         uint   `config:"EVENT_BROKER_PORT"`

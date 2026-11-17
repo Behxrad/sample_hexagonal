@@ -1,7 +1,12 @@
 192.168.100.6/coreinno/common.git v0.0.0-20261115135028-ab1d988637c9 h1:ROXxX+NlcE/4vJ8giwnO48G2iSEhqDGajP8oAQQf1FM=
 192.168.100.6/coreinno/common.git v0.0.0-20261115135028-ab1d988637c9/go.mod h1:IM6uzgmbEx8cgHW2T4Y4Job+hq3k1nM5vHVHAtl3e6A=
-192.168.100.6/coreinno/proto_common.git v0.0.0-20261115133555-99b242514365 h1:RajJg5YkELgOILHqSxaSi1O0uHH1pJkiTKde6vO3q8k=
+192.168.100.6/coreinno/common.git v0.0.0-20261117063954-5689a305126b h1:qaZtdx9M8E/Zp7gChM3jtvB3Se6BxxZ1b0BMuVZr3YY=
+192.168.100.6/coreinno/common.git v0.0.0-20261117063954-5689a305126b/go.mod h1:ZhVSetqTeQpUOjCmsvcCPiPiQIz15GdNmxQl5D01KRI=
 192.168.100.6/coreinno/proto_common.git v0.0.0-20261115133555-99b242514365/go.mod h1:rB+xzpLUrZRK0b2/Hy7+hd5kqfnQMT/jyf7SdnkH4ik=
+192.168.100.6/coreinno/proto_common.git v0.0.0-20261115193123-4ddac6a00f5a h1:UKgPifvT0LWPadi3HBdiu8d6vR7n/v5kRHHP+h0FcY0=
+192.168.100.6/coreinno/proto_common.git v0.0.0-20261115193123-4ddac6a00f5a/go.mod h1:rB+xzpLUrZRK0b2/Hy7+hd5kqfnQMT/jyf7SdnkH4ik=
+192.168.100.6/coreinno/proto_common.git v0.0.0-20261117071505-362a59779b1d h1:tvoI6p/J09VG41wEDDHCUPawV2a/od593PnJeT0SybQ=
+192.168.100.6/coreinno/proto_common.git v0.0.0-20261117071505-362a59779b1d/go.mod h1:rB+xzpLUrZRK0b2/Hy7+hd5kqfnQMT/jyf7SdnkH4ik=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
