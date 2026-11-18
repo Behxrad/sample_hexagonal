@@ -52,6 +52,24 @@ services:
     volumes:
       - kafka-data:/var/lib/kafka/data
 
+  grpcui:
+    build:
+      context: ../..
+      dockerfile: deployments/docker/grpcui.Dockerfile
+    container_name: grpcui
+    restart: unless-stopped
+    ports:
+      - "57613:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command:
+      - -plaintext
+      - -bind
+      - 0.0.0.0
+      - -port
+      - "8080"
+      - host.docker.internal:50051
+
 volumes:
   postgres_db_data:
   mongo_db_data:
