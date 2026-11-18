@@ -4,7 +4,7 @@ go 1.26.5
 
 require (
 	192.168.100.6/coreinno/common.git v0.0.0-20261117063954-5689a305126b
-	192.168.100.6/coreinno/proto_common.git v0.0.0-20261117071505-362a59779b1d
+	192.168.100.6/coreinno/proto_common.git v0.0.0-20261118062859-40cfbe6fa30d
 	github.com/google/uuid v1.6.0
 	github.com/jackc/pgx/v5 v5.11.0
 	github.com/segmentio/kafka-go v0.4.51

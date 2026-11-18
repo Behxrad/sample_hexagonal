@@ -29,7 +29,8 @@ func NewGRPCServer(service api.ProductService) GRPCServer {
 		ps: service,
 	}
 	sr := grpc.NewServer(grpc.ChainUnaryInterceptor(rpc_util.PanicRecoveryInterceptor(),
-		rpc_util.ErrorResponseInterceptor(ErrorToMetadataMapper), PrintRequestMetadataFromContextInterceptor))
+		rpc_util.ErrorResponseInterceptor(ErrorToMetadataMapper), rpc_util.SuccessResponseInterceptor(),
+		PrintRequestMetadataFromContextInterceptor))
 	inventory.RegisterProductServiceServer(sr, g)
 	reflection.Register(sr)
 	g.gs = sr
@@ -63,20 +64,20 @@ func PrintRequestMetadataFromContextInterceptor(ctx context.Context, req any, in
 
 func ErrorToMetadataMapper(err error) *common.ResponseMetadata {
 	var serviceError *errs.Error
-	code := errs.GeneralUnknownError
+	var code inbound_headers.StatusCode
 	if ok := errors.As(err, &serviceError); ok {
 		switch serviceError.Code.LeftmostDigit() {
 		case 4:
-			code = errs.GeneralClientError
+			code = inbound_headers.StatusClientFailure
 		case 5:
-			code = errs.GeneralInternalServerError
+			code = inbound_headers.StatusServerFailure
 		case 6:
 		default:
-			code = errs.GeneralUnknownError
+			code = inbound_headers.StatusUnknown
 		}
 	}
 	return &common.ResponseMetadata{
-		StatusCode:   common.StatusCode(code),
+		StatusCode:   uint32(code),
 		TraceMessage: err.Error(),
 	}
 }
